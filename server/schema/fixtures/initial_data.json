@@ -1,0 +1,118 @@
+[
+  {
+    "model": "schema.organization",
+    "pk": 1,
+    "fields": {
+      "name": "Tech Solutions Inc",
+      "description": "Leading tech company",
+      "address": "123 Tech Street, Silicon Valley",
+      "contact_email": "contact@techsolutions.com",
+      "contact_phone": "+1-555-0123"
+    }
+  },
+  {
+    "model": "schema.organization",
+    "pk": 2,
+    "fields": {
+      "name": "Digital Innovations",
+      "description": "Digital transformation company",
+      "address": "456 Innovation Ave, New York",
+      "contact_email": "info@digitalinnovations.com",
+      "contact_phone": "+1-555-0456"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "john.doe",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john.doe@example.com",
+      "password": "pbkdf2_sha256$260000$abcdef1234567890$abcdef1234567890abcdef1234567890",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-02-18T11:33:20+05:30"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "jane.smith",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "email": "jane.smith@example.com",
+      "password": "pbkdf2_sha256$260000$abcdef1234567890$abcdef1234567890abcdef1234567890",
+      "is_active": true,
+      "is_staff": false,
+      "date_joined": "2025-02-18T11:33:20+05:30"
+    }
+  },
+  {
+    "model": "schema.employee",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "organization": 1,
+      "employee_type": "FULL_TIME",
+      "designation": "Senior Developer",
+      "date_joined": "2025-01-01"
+    }
+  },
+  {
+    "model": "schema.employee",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "organization": 2,
+      "employee_type": "PART_TIME",
+      "designation": "Project Manager",
+      "date_joined": "2025-01-15"
+    }
+  },
+  {
+    "model": "schema.assignment",
+    "pk": 1,
+    "fields": {
+      "title": "Web Application Development",
+      "description": "Develop a new web application using Django",
+      "start_date": "2025-02-01",
+      "end_date": "2025-04-01",
+      "status": "IN_PROGRESS"
+    }
+  },
+  {
+    "model": "schema.assignment",
+    "pk": 2,
+    "fields": {
+      "title": "Mobile App Design",
+      "description": "Design UI/UX for mobile application",
+      "start_date": "2025-02-15",
+      "end_date": "2025-03-15",
+      "status": "NOT_STARTED"
+    }
+  },
+  {
+    "model": "schema.assignmentallocation",
+    "pk": 1,
+    "fields": {
+      "employee": 1,
+      "assignment": 1,
+      "start_date": "2025-02-01",
+      "end_date": "2025-04-01",
+      "status": "ACTIVE"
+    }
+  },
+  {
+    "model": "schema.assignmentallocation",
+    "pk": 2,
+    "fields": {
+      "employee": 2,
+      "assignment": 2,
+      "start_date": "2025-02-15",
+      "end_date": "2025-03-15",
+      "status": "PENDING"
+    }
+  }
+]
