@@ -9,22 +9,27 @@ function EmployeeList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        setLoading(true);
+        const data = await getEmployees();
+        console.log('Fetched employees:', data);
+        if (Array.isArray(data)) {
+          setEmployees(data);
+          setError(null);
+        } else {
+          setError('Invalid data format received from server');
+        }
+      } catch (err) {
+        console.error('Error fetching employees:', err);
+        setError('Failed to fetch employees. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchEmployees();
   }, []);
-
-  const fetchEmployees = async () => {
-    try {
-      setLoading(true);
-      const data = await getEmployees();
-      setEmployees(data);
-      setError(null);
-    } catch (err) {
-      setError('Failed to fetch employees. Please try again later.');
-      console.error('Error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -45,6 +50,15 @@ function EmployeeList() {
     );
   }
 
+  if (!employees || employees.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">Employees</h1>
+        <div className="text-center text-gray-600">No employees found.</div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Employees</h1>
@@ -61,7 +75,7 @@ function EmployeeList() {
                   <UserCircleIcon className="h-12 w-12 text-gray-700 mr-4" />
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900">
-                      {employee.first_name} {employee.last_name}
+                      {employee.user?.first_name} {employee.user?.last_name}
                     </h2>
                     <p className="text-gray-600">{employee.designation}</p>
                   </div>
@@ -71,11 +85,11 @@ function EmployeeList() {
               <div className="mt-4 space-y-3">
                 <div className="flex items-center text-sm text-gray-500">
                   <BriefcaseIcon className="h-5 w-5 mr-2" />
-                  <span>{employee.organization.name}</span>
+                  <span>{employee.organization?.name}</span>
                 </div>
                 <div className="flex items-center text-sm text-gray-500">
                   <span className="px-2 py-1 text-xs rounded-full bg-gray-100">
-                    {employee.employee_type.replace('_', ' ')}
+                    {employee.employee_type?.replace('_', ' ')}
                   </span>
                 </div>
               </div>
@@ -83,7 +97,7 @@ function EmployeeList() {
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <div className="text-sm text-gray-500">
                   <span className="font-medium text-gray-700">Joined: </span>
-                  {new Date(employee.date_joined).toLocaleDateString()}
+                  {employee.date_joined && new Date(employee.date_joined).toLocaleDateString()}
                 </div>
               </div>
             </div>

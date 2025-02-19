@@ -14,22 +14,22 @@ function EmployeeProfile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchEmployeeData();
-  }, [id]);
+    const getEmployeeData = async () => {
+      try {
+        setLoading(true);
+        const data = await getEmployee(id);
+        setEmployeeData(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch employee data. Please try again later.');
+        console.error('Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchEmployeeData = async () => {
-    try {
-      setLoading(true);
-      const data = await getEmployee(id);
-      setEmployeeData(data);
-      setError(null);
-    } catch (err) {
-      setError('Failed to fetch employee data. Please try again later.');
-      console.error('Error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    getEmployeeData();
+  }, [id]);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -179,27 +179,35 @@ function EmployeeProfile() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {employeeData.assignments.map((assignment) => (
-                  <tr key={assignment.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {assignment.title}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      {assignment.description}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(assignment.status)}`}>
-                        {assignment.status.replace('_', ' ')}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(assignment.start_date).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(assignment.end_date).toLocaleDateString()}
+                {employeeData.assignments && employeeData.assignments.length > 0 ? (
+                  employeeData.assignments.map((assignment) => (
+                    <tr key={assignment.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {assignment.title}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {assignment.description}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(assignment.status)}`}>
+                          {assignment.status.replace('_', ' ')}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(assignment.start_date).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(assignment.end_date).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="px-6 py-4 text-center text-sm text-gray-500">
+                      No assignments found
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
