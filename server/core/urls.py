@@ -20,9 +20,12 @@ from rest_framework.routers import DefaultRouter
 from schema.views import (
     OrganizationViewSet,
     EmployeeViewSet,
-    AssignmentViewSet,
     AssignmentAllocationViewSet,
-    api_root
+    api_root,
+    assignment_list,
+    assignment_detail,
+    employee_list,
+    employee_detail
 )
 from django.views.generic import RedirectView
 
@@ -30,11 +33,16 @@ from django.views.generic import RedirectView
 router = DefaultRouter()
 router.register(r'organizations', OrganizationViewSet)
 router.register(r'employees', EmployeeViewSet)
-router.register(r'assignments', AssignmentViewSet)
 router.register(r'assignment-allocations', AssignmentAllocationViewSet)
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/api/', permanent=False)),  # Redirect root to API
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    # Native Django assignment endpoints
+    path('api/assignments/', assignment_list, name='assignment-list'),
+    path('api/assignments/<int:assignment_id>/', assignment_detail, name='assignment-detail'),
+    # Native Django employee endpoints
+    path('api/employees/', employee_list, name='employee-list'),
+    path('api/employees/<int:employee_id>/', employee_detail, name='employee-detail'),
 ]

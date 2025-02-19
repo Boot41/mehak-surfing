@@ -1,13 +1,21 @@
+# Use Node.js LTS version
 FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 
+# Install dependencies
 RUN npm install
 
+# Copy project files
 COPY . .
 
-EXPOSE 5173
+# Expose port 3000
+EXPOSE 3000
 
-CMD ["npm", "run", "dev", "--", "--host"]
+# Start React development server
+ENV CI=false
+CMD ["npm", "start"]
